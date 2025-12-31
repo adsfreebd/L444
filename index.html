@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image থেকে URL বের করুন</title>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
+<style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    input, button { margin: 10px 0; }
+    #output { white-space: pre-wrap; background: #f0f0f0; padding: 10px; }
+</style>
+</head>
+<body>
+
+<h2>Image থেকে URL বের করুন</h2>
+<input type="file" id="imageInput" accept="image/*"><br>
+<button onclick="extractURL()">URL বের করুন</button>
+
+<h3>ফলাফল:</h3>
+<div id="output">এখানে URL দেখাবে...</div>
+
+<script>
+function extractURL() {
+    const file = document.getElementById('imageInput').files[0];
+    if (!file) {
+        alert("দয়া করে একটি ছবি আপলোড করুন।");
+        return;
+    }
+
+    document.getElementById('output').innerText = "Processing...";
+
+    Tesseract.recognize(
+        file,
+        'eng',
+        { logger: m => console.log(m) }
+    ).then(({ data: { text } }) => {
+        // URL detect করা
+        const urlRegex = /(https?:\/\/[^\s]+)/g;
+        const urls = text.match(urlRegex);
+        if (urls && urls.length > 0) {
+            document.getElementById('output').innerText = urls.join('\n');
+        } else {
+            document.getElementById('output').innerText = "কোনো URL পাওয়া যায়নি।";
+        }
+    }).catch(err => {
+        console.error(err);
+        document.getElementById('output').innerText = "Error: " + err.message;
+    });
+}
+</script>
+
+</body>
+</html>
