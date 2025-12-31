@@ -9,7 +9,7 @@
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <!-- Ad SDK (Updated) -->
+    <!-- Ad SDK -->
     <script src='//libtl.com/sdk.js' data-zone='10397973' data-sdk='show_10397973'></script>
     
     <style>
@@ -92,9 +92,9 @@
         </div>
     </div>
 
-    <!-- CONTENT VIEWER MODAL (Updated for Iframe) -->
+    <!-- TEXT VIEWER MODAL (Only for Text) -->
     <div id="content-viewer-modal" class="hidden fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-2 sm:p-4">
-        <div class="bg-white w-full max-w-5xl h-[85vh] rounded-lg shadow-2xl flex flex-col overflow-hidden relative">
+        <div class="bg-white w-full max-w-3xl h-[60vh] rounded-lg shadow-2xl flex flex-col overflow-hidden relative">
             <!-- Modal Header -->
             <div class="bg-gray-100 p-3 sm:p-4 border-b flex justify-between items-center shrink-0">
                 <h3 id="modal-title" class="text-lg font-bold text-gray-800 truncate pr-4">Content Viewer</h3>
@@ -104,12 +104,12 @@
             </div>
             
             <!-- Modal Body -->
-            <div id="modal-body" class="flex-grow bg-gray-50 relative w-full h-full overflow-hidden">
-                <!-- Content injected here (Iframe or Text) -->
+            <div id="modal-body" class="flex-grow bg-gray-50 relative w-full h-full overflow-hidden p-4">
+                <!-- Text Area injected here -->
             </div>
 
             <!-- Modal Footer (For Text Copy) -->
-            <div id="modal-footer" class="bg-gray-100 p-3 border-t hidden shrink-0 text-right">
+            <div id="modal-footer" class="bg-gray-100 p-3 border-t shrink-0 text-right">
                 <button id="copy-content-btn" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm font-semibold shadow-sm">
                     <i class="fas fa-copy mr-2"></i> Copy Text
                 </button>
@@ -166,9 +166,33 @@
         let allFilesData = {}; // Store file data
 
         const translations = {
-            en: { main_title: "Webapp Sikho", main_subtitle: "Watch Ads, Unlock, and Download Files for Free!", search_placeholder: "Search for files...", available_files: "Available Files", no_results_text: "No files found matching your search.", no_slides: "No promotional slides available.", slides_error: "Could not load slides.", no_files_uploaded: "No files have been uploaded yet.", files_error: "Could not load files.", unlock_button: "Unlock ({adCount}/{requiredCount})", download_now_button: "Download Now", view_now_button: "View Content", toast_download_starting: "Opening content...", toast_progress: "Progress: {adCount}/{requiredCount}", toast_unlocked: "Unlocked successfully!", toast_ad_error: "Could not load ad.", loading_ad: "Loading ad...", verifying_button: "Wait {countdown}s", },
-            hi: { main_title: "वेबऐप सीखो", main_subtitle: "विज्ञापन देखें, अनलॉक करें और मुफ्त में फाइलें डाउनलोड करें!", search_placeholder: "फ़ाइलों के लिए खोजें...", available_files: "उपलब्ध फाइलें", no_results_text: "कोई फ़ाइल नहीं मिली।", no_slides: "कोई स्लाइड उपलब्ध नहीं है।", slides_error: "स्लाइड लोड नहीं हो सकीं।", no_files_uploaded: "कोई फ़ाइल अपलोड नहीं की गई।", files_error: "फ़ाइलें लोड नहीं हो सकीं।", unlock_button: "अनलॉक ({adCount}/{requiredCount})", download_now_button: "अभी डाउनलोड करें", view_now_button: "अभी देखें", toast_download_starting: "कंटेंट खुल रहा है...", toast_progress: "प्रगति: {adCount}/{requiredCount}", toast_unlocked: "अनलॉक हो गया!", toast_ad_error: "विज्ञापन लोड त्रुटि।", loading_ad: "लोड हो रहा है...", verifying_button: "प्रतीक्षा करें {countdown}s", },
-            bn: { main_title: "ওয়েবঅ্যাপ শিখুন", main_subtitle: "বিজ্ঞাপন দেখুন, আনলক করুন এবং বিনামূল্যে ফাইল ডাউনলোড করুন!", search_placeholder: "ফাইলের জন্য অনুসন্ধান করুন...", available_files: "উপলব্ধ ফাইল", no_results_text: "কোনো ফাইল পাওয়া যায়নি।", no_slides: "স্লাইড উপলব্ধ নেই।", slides_error: "স্লাইড লোড করা যায়নি।", no_files_uploaded: "এখনো কোনো ফাইল আপলোড করা হয়নি।", files_error: "ফাইল লোড করা যায়নি।", unlock_button: "আনলক করুন ({adCount}/{requiredCount})", download_now_button: "ডাউনলোড করুন", view_now_button: "এখনই দেখুন", toast_download_starting: "কন্টেন্ট খোলা হচ্ছে...", toast_progress: " অগ্রগতি: {adCount}/{requiredCount}", toast_unlocked: "আনলক করা হয়েছে!", toast_ad_error: "বিজ্ঞাপন লোড করা যায়নি।", loading_ad: "লোড হচ্ছে...", verifying_button: "অপেক্ষা করুন {countdown}s", }
+            en: { 
+                main_title: "Webapp Sikho", main_subtitle: "Watch Ads, Unlock, and Download Files for Free!", search_placeholder: "Search for files...", available_files: "Available Files", no_results_text: "No files found matching your search.", no_slides: "No promotional slides available.", slides_error: "Could not load slides.", no_files_uploaded: "No files have been uploaded yet.", files_error: "Could not load files.", 
+                unlock_button: "Unlock ({adCount}/{requiredCount})", 
+                download_link_button: "Download Link", 
+                download_html_button: "Download HTML File",
+                view_text_button: "View & Copy Text",
+                toast_download_starting: "Processing...", 
+                toast_progress: "Progress: {adCount}/{requiredCount}", toast_unlocked: "Unlocked successfully!", toast_ad_error: "Could not load ad.", loading_ad: "Loading ad...", verifying_button: "Wait {countdown}s", 
+            },
+            hi: { 
+                main_title: "वेबऐप सीखो", main_subtitle: "विज्ञापन देखें, अनलॉक करें और मुफ्त में फाइलें डाउनलोड करें!", search_placeholder: "फ़ाइलों के लिए खोजें...", available_files: "उपलब्ध फाइलें", no_results_text: "कोई फ़ाइल नहीं मिली।", no_slides: "कोई स्लाइड उपलब्ध नहीं है।", slides_error: "स्लाइड लोड नहीं हो सकीं।", no_files_uploaded: "कोई फ़ाइल अपलोड नहीं की गई।", files_error: "फ़ाइलें लोड नहीं हो सकीं।", 
+                unlock_button: "अनलॉक ({adCount}/{requiredCount})", 
+                download_link_button: "लिंक डाउनलोड करें", 
+                download_html_button: "HTML फाइल डाउनलोड करें",
+                view_text_button: "टेक्स्ट देखें और कॉपी करें",
+                toast_download_starting: "प्रक्रिया जारी है...", 
+                toast_progress: "प्रगति: {adCount}/{requiredCount}", toast_unlocked: "अनलॉक हो गया!", toast_ad_error: "विज्ञापन लोड त्रुटि।", loading_ad: "लोड हो रहा है...", verifying_button: "प्रतीक्षा करें {countdown}s", 
+            },
+            bn: { 
+                main_title: "ওয়েবঅ্যাপ শিখুন", main_subtitle: "বিজ্ঞাপন দেখুন, আনলক করুন এবং বিনামূল্যে ফাইল ডাউনলোড করুন!", search_placeholder: "ফাইলের জন্য অনুসন্ধান করুন...", available_files: "উপলব্ধ ফাইল", no_results_text: "কোনো ফাইল পাওয়া যায়নি।", no_slides: "স্লাইড উপলব্ধ নেই।", slides_error: "স্লাইড লোড করা যায়নি।", no_files_uploaded: "এখনো কোনো ফাইল আপলোড করা হয়নি।", files_error: "ফাইল লোড করা যায়নি।", 
+                unlock_button: "আনলক করুন ({adCount}/{requiredCount})", 
+                download_link_button: "ডাউনলোড লিঙ্ক", 
+                download_html_button: "HTML ফাইল ডাউনলোড করুন",
+                view_text_button: "টেক্সট দেখুন এবং কপি করুন",
+                toast_download_starting: "প্রক্রিয়া করা হচ্ছে...", 
+                toast_progress: " অগ্রগতি: {adCount}/{requiredCount}", toast_unlocked: "আনলক করা হয়েছে!", toast_ad_error: "বিজ্ঞাপন লোড করা যায়নি।", loading_ad: "লোড হচ্ছে...", verifying_button: "অপেক্ষা করুন {countdown}s", 
+            }
         };
 
         function applyLanguage(lang) {
@@ -269,13 +293,16 @@
                 
                 snap.forEach(doc => {
                     const d = doc.data();
+                    // Default to 'link' if fileType is missing for backward compatibility
+                    const fileType = d.fileType || 'link'; 
+                    
                     const obj = {
                         id: doc.id,
                         title: d.title,
                         description: d.description,
                         thumbnailUrl: d.thumbnailUrl,
                         requiredAds: d.requiredAds,
-                        fileType: d.fileType || 'link',
+                        fileType: fileType,
                         contentValue: d.contentValue || d.downloadUrl || ""
                     };
                     allFilesData[doc.id] = obj;
@@ -285,9 +312,10 @@
                     card.dataset.title = obj.title.toLowerCase();
                     card.dataset.description = obj.description.toLowerCase();
                     
-                    let icon = 'fas fa-download';
-                    if(obj.fileType === 'html') icon = 'fas fa-code';
-                    if(obj.fileType === 'text') icon = 'fas fa-file-alt';
+                    // Initial Icon based on type
+                    let iconClass = 'fas fa-download';
+                    if(fileType === 'text') iconClass = 'fas fa-file-alt';
+                    if(fileType === 'html') iconClass = 'fas fa-file-code';
 
                     card.innerHTML = `
                         <img src="${obj.thumbnailUrl}" alt="${obj.title}" class="w-full aspect-video object-cover" onerror="this.src='https://placehold.co/400x225?text=Error';">
@@ -295,7 +323,7 @@
                             <h3 class="text-lg font-bold text-gray-900 truncate" title="${obj.title}">${obj.title}</h3>
                             <p class="text-gray-600 text-sm mt-1 h-10 overflow-hidden">${obj.description}</p>
                             <button data-id="${obj.id}" data-required-ads="${obj.requiredAds||10}" class="download-btn w-full mt-4 py-2.5 px-4 rounded-lg text-white font-semibold shadow-md flex items-center justify-center gap-2 transition-all">
-                                <i class="${icon}"></i> <span></span>
+                                <i class="${iconClass}"></i> <span></span>
                             </button>
                         </div>
                     `;
@@ -334,11 +362,22 @@
             const i = btn.querySelector('i');
             
             btn.disabled = false;
+            // Set Color: Blue/Purple for locked, Green for unlocked
             btn.className = `download-btn w-full mt-4 py-2.5 px-4 rounded-lg text-white font-semibold shadow-md flex items-center justify-center gap-2 transition-all ${unlocked ? 'bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800' : 'bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700'}`;
             
             if (unlocked) {
-                span.textContent = data.fileType === 'link' ? getText('download_now_button') : getText('view_now_button');
-                i.className = data.fileType === 'link' ? 'fas fa-download' : 'fas fa-eye';
+                // Update text based on file type
+                if(data.fileType === 'html') {
+                    span.textContent = getText('download_html_button');
+                    i.className = 'fas fa-file-code';
+                } else if (data.fileType === 'text') {
+                    span.textContent = getText('view_text_button');
+                    i.className = 'fas fa-copy';
+                } else {
+                    // Default / Link
+                    span.textContent = getText('download_link_button');
+                    i.className = 'fas fa-download';
+                }
             } else {
                 span.textContent = getText('unlock_button', { adCount: count, requiredCount: req });
                 i.className = 'fas fa-lock';
@@ -360,17 +399,40 @@
 
             if(count >= req) {
                 showToast('toast_download_starting');
+                
                 setTimeout(() => {
-                    if(data.fileType === 'link') {
+                    if(data.fileType === 'html') {
+                        // LOGIC: Download content as an HTML file
+                        downloadStringAsFile(data.contentValue, data.title + ".html", "text/html");
+                    } 
+                    else if (data.fileType === 'text') {
+                        // LOGIC: Open Modal for copying text
+                        openTextModal(data.title, data.contentValue);
+                    } 
+                    else {
+                        // LOGIC: Open Link
                         const w = window.open(data.contentValue, '_blank');
                         if(!w || w.closed || typeof w.closed=='undefined') window.location.href = data.contentValue;
-                    } else {
-                        openModal(data.title, data.contentValue, data.fileType);
                     }
                 }, 1000);
             } else {
                 processUnlock(btn);
             }
+        }
+
+        // Helper function to download string as file
+        function downloadStringAsFile(content, filename, mimeType) {
+            const blob = new Blob([content], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(() => {
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            }, 0);
         }
 
         async function processUnlock(btn) {
@@ -383,8 +445,7 @@
             try {
                 span.textContent = getText('loading_ad');
                 
-                // UPDATED AD CALL FOR NEW ZONE ID
-                await show_10397973(); 
+                await show_10397973(); // Ad SDK Call
                 
                 count++;
                 localStorage.setItem(`adCount_${id}`, count);
@@ -408,29 +469,27 @@
             }
         }
 
-        // --- MODAL LOGIC (IFRAME) ---
-        function openModal(title, content, type) {
+        // --- TEXT MODAL LOGIC ---
+        function openTextModal(title, content) {
             modalTitle.textContent = title;
-            modalBody.innerHTML = '';
-            modalFooter.classList.add('hidden');
-
-            if(type === 'html') {
-                // Create an isolated Iframe
-                const iframe = document.createElement('iframe');
-                iframe.className = "w-full h-full border-none";
-                iframe.srcdoc = content; // Inject HTML code directly
-                modalBody.appendChild(iframe);
-            } else if (type === 'text') {
-                modalBody.innerHTML = `<textarea readonly class="w-full h-full p-4 bg-gray-50 text-gray-800 font-mono text-sm resize-none focus:outline-none">${content}</textarea>`;
-                modalFooter.classList.remove('hidden');
-                copyBtn.onclick = () => {
-                    navigator.clipboard.writeText(content).then(() => {
-                        const original = copyBtn.innerHTML;
-                        copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                        setTimeout(() => copyBtn.innerHTML = original, 2000);
-                    });
-                };
-            }
+            modalBody.innerHTML = `<textarea readonly class="w-full h-full p-4 border rounded bg-gray-50 text-gray-800 font-mono text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-500">${content}</textarea>`;
+            
+            // Set up Copy Button Logic
+            copyBtn.onclick = () => {
+                navigator.clipboard.writeText(content).then(() => {
+                    const originalHtml = copyBtn.innerHTML;
+                    copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    copyBtn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+                    copyBtn.classList.add('bg-green-600', 'hover:bg-green-700');
+                    
+                    setTimeout(() => {
+                        copyBtn.innerHTML = originalHtml;
+                        copyBtn.classList.remove('bg-green-600', 'hover:bg-green-700');
+                        copyBtn.classList.add('bg-blue-600', 'hover:bg-blue-700');
+                    }, 2000);
+                });
+            };
+            
             contentModal.classList.remove('hidden');
         }
 
@@ -460,4 +519,4 @@
         document.querySelectorAll('.lang-btn').forEach(b => b.addEventListener('click', () => applyLanguage(b.dataset.lang)));
     </script>
 </body>
-</html>
+                    </html>
